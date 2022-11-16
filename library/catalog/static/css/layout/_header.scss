@@ -1,0 +1,283 @@
+/*
+ * Header
+ */
+
+ .layout-header {
+  background-color: transparent;
+  position: fixed;
+  width: 100%;
+  z-index: 1000;
+  transition: background-color 0.2s;
+
+  background-color: #fff;
+  border-bottom: 1px solid #333;
+
+  &.open-moblie { border-bottom: none; }
+
+  .navbar-nav {
+    .menu, .close {
+      font-size: 28px;
+      width: 28px;
+      color: #555;
+    }
+    .menu i {margin-top: 10px;}
+    .close {display: none;}
+  }
+
+  .navbar.desktop {
+    padding: 0;
+    align-items: center;
+    height: 70px;
+    z-index: 1000;
+
+    .navbar-brand {
+      display: block;
+      &.scroll-top {display: none;}
+      img { height: 25px; }
+    }
+
+    .navbar-toggler {
+      padding: 0;
+      font-size: 32px;
+      color: #26a757;
+    }
+
+    .navbar-nav {
+      box-orient: horizontal !important;
+      box-direction: normal !important;
+      flex-direction: row !important;
+      justify-content: flex-end;
+      align-items: center;
+
+      &.mobile {
+        display: none;
+        font-size: 28px;
+
+        @media (min-width:376px) and (max-width: 768px) {
+          display: flex;
+        }
+      }
+      &.desktop {
+        @media (min-width:376px) and (max-width: 768px) {
+          display: none;
+        }
+      }
+      .nav-item {
+        font-weight: 500;
+        font-size: 15px;
+        color: #555;
+        .nav-link {
+          background-color: transparent;
+          color: inherit;
+          
+          &::after {
+            content: none;
+          }
+        }
+
+        &:hover,
+        &.active,
+        &.active-only {
+          position: relative;
+          font-weight: bold;
+          color: #555;
+          .nav-link {
+            background-color: transparent;
+            color: inherit;
+          }
+
+          &.line-none {
+            &::after {
+              content: none;
+            }
+          }
+        }
+
+        &.dropdown {
+          .dropdown-menu {
+            position: absolute !important;
+            float: none !important;
+            border: 0;
+            left: 50%;
+            margin: 0;
+            background-color: transparent;
+            transform: translateX(-50%);
+
+            .dropdown-wrap {
+              position: relative;
+              padding: 16px 0;
+              border-radius: 10px;
+              box-shadow: 0 0 30px 0 rgba(198, 210, 221, 0.3);
+              background-color: #fff;
+
+              .dropdown-item {
+                color: #455c73;
+                background-color: transparent;
+                opacity: 0.8;
+                // text-align: center;
+                font-weight: 400;
+                padding: 4px 20px;
+
+                &:hover,
+                &:focus {
+                  opacity: 1;
+                  font-weight: 500;
+                }
+              }
+
+              &::before {
+                content: '';
+                position: absolute;
+                top: -20px;
+                left: 50%;
+                transform: translateX(-50%);
+                border-top: 10px solid transparent;
+                border-bottom: 10px solid #fff;
+                border-right: 10px solid transparent;
+                border-left: 10px solid transparent;
+              }
+            }
+          }
+
+          &:hover,
+          &.active {
+            .dropdown-menu {
+              display: block;
+            }
+            .btn {
+              span + i {
+                transform: rotate(-180deg);
+              }
+            }
+          }
+        }
+        a {
+          vertical-align: text-top;
+          &:focus {
+            background-color: transparent;
+          }
+        }
+        i {
+          color: #fff
+        }
+      }
+
+      .btn-download {
+        display: block;
+        width: 120px;
+        height: 38px;
+        line-height: 38px;
+        border-radius: 38px;
+        background-color: #ed8139;
+        font-size: 16px;
+        font-weight: 500;
+        color: #00DEC3;
+        margin: auto;
+        margin-right: 36px;
+        border: 1px solid #ed8139;
+        &:hover {
+          background-color: #fff;
+          border: 1px solid #26a757;
+          color: #26a757;
+        }
+        &:focus {
+          background-color: #26a757;
+          border: 1px solid #26a757;
+          color: #fff;
+        }
+      }
+    }
+
+    .btn {
+      display: flex;
+      align-items: center;
+      padding: 0 15px;
+      margin: 8px 0;
+      color: #000;
+      font-size: rem(16);
+      font-weight: 400 !important;
+      border: 1px solid #333;
+      border-radius: 10px;
+      line-height: 28px;
+
+      &.login {
+        position: relative;
+        border: 0;
+
+        img {
+          width: 30px;
+          padding: 5px;
+          border-radius: 50%;
+          background-color: #eff2f5;
+        }
+
+        span {
+          font-weight: 500;
+
+          & + i {
+            font-size: 12px;
+          }
+        }
+      }
+
+      img {
+        width: 24px;
+      }
+    }
+
+    .navbar-collapse {
+      display: block !important;
+      flex-basis: auto !important;
+    }
+  }
+
+  .navbar.mobile {
+    visibility: hidden;
+    position: absolute;
+    width: 100%;
+    height: 0;
+    top: 0px;
+    background-color: #fff;
+    border-bottom: 1px solid #333;
+    z-index: 900;
+    overflow: auto;
+    padding: 0;
+    flex-direction: column;
+    transition: height 0.3s;
+    &.active {
+      height: fit-content;
+    }
+
+    .container {padding-top: 70px; padding-bottom: 20px;}
+    .navbar-nav {
+      flex: 1;
+      li {height: fit-content;}
+      li.active-only a {
+        color: #26a757;
+        font-weight: 600;
+        text-decoration: none;
+      }
+      a:not(.btn-download){
+        display: block;
+        width: 100%;
+        padding: 10px 0;
+        color: #777;
+        text-decoration: none;
+        &:hover {
+          text-decoration: none;
+        }
+      }
+    }
+  }
+
+  .header-backdrop { z-index: 800; }
+  @media (min-width:376px) and (max-width: 768px) {
+    .navbar.desktop .navbar-nav .btn-download {
+      width: 87px;
+      height: 32px;
+      line-height: 32px;
+      font-size: 12px;
+      margin-right: 24px;
+    } 
+  }
+}

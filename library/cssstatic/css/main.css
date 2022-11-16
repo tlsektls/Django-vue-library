@@ -1,0 +1,164 @@
+@charset "UTF-8";
+/** Base */
+body { padding: 0; font-family: 'pretendard', 'Noto Sans Korean', sans-serif; color: #495057; line-height: 1.5; scroll-behavior: smooth; text-rendering: optimizeSpeed; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+
+/** 1. Change the font styles in all browsers. 2. Remove the margin in Firefox and Safari. */
+button, input, optgroup, select, textarea { font-family: inherit; /* 1 */ font-size: 100%; /* 1 */ line-height: 1.15; /* 1 */ margin: 0; /* 2 */ }
+
+/** Show the overflow in IE. 1. Show the overflow in Edge. */
+button, input { /* 1 */ overflow: visible; }
+
+/** Remove the inheritance of text transform in Edge, Firefox, and IE. 1. Remove the inheritance of text transform in Firefox. */
+button, select { /* 1 */ text-transform: none; }
+
+/** Correct the inability to style clickable types in iOS and Safari. */
+button, [type='button'], [type='reset'], [type='submit'] { -webkit-appearance: button; }
+
+button *, [type='button'] *, [type='reset'] *, [type='submit'] * { pointer-events: none; }
+
+form, figure, figcaption, h1, h2, h3, h4, dl, dd, ul, ol, p, blockquote { margin: 0; }
+
+ul, ol { padding-left: 0; list-style: none; }
+
+button { padding: 0; border: none; font: inherit; color: inherit; background-color: transparent; }
+
+button i, button svg { pointer-events: none; }
+
+a { color: inherit; }
+
+img, video { max-width: 100%; }
+
+img { border-style: none; vertical-align: middle; }
+
+textarea { resize: none; }
+
+[disabled], .disabled { cursor: not-allowed; text-decoration: none; }
+
+[disabled] *, .disabled * { pointer-events: none; }
+
+.layout-wrap { position: relative; overflow: hidden; }
+
+h1, h2, h3, h4, h5, h6 { font-family: 'NEXON Gothic', 'pretendard', 'Noto Sans Korean', sans-serif; font-weight: 600; color: #333; }
+
+a:focus, button:focus, input:focus, textarea:focus { border-color: transparent; background-color: transparent; box-shadow: none; }
+
+html { font-size: 14px; color: #333; }
+
+@media (max-width: 375px) { html { font-size: 14px; } }
+
+@media (min-width: 376px) and (max-width: 768px) { html { font-size: 15px; } }
+
+/* LAYOUT 사이트나 어플리케이션의 레이아웃에 기여하는 모든 것. 사이트의 주요 부분(header, footer, navigation, sidebar…) @import 'layout/..'; */
+/* Header */
+.layout-header { background-color: transparent; position: fixed; width: 100%; z-index: 1000; transition: background-color 0.2s; background-color: #fff; border-bottom: 1px solid #333; }
+
+.layout-header.open-moblie { border-bottom: none; }
+
+.layout-header .navbar-nav .menu, .layout-header .navbar-nav .close { font-size: 28px; width: 28px; color: #555; }
+
+.layout-header .navbar-nav .menu i { margin-top: 10px; }
+
+.layout-header .navbar-nav .close { display: none; }
+
+.layout-header .navbar.desktop { padding: 0; align-items: center; height: 70px; z-index: 1000; }
+
+.layout-header .navbar.desktop .navbar-brand { display: block; }
+
+.layout-header .navbar.desktop .navbar-brand.scroll-top { display: none; }
+
+.layout-header .navbar.desktop .navbar-brand img { height: 25px; }
+
+.layout-header .navbar.desktop .navbar-toggler { padding: 0; font-size: 32px; color: #26a757; }
+
+.layout-header .navbar.desktop .navbar-nav { box-orient: horizontal !important; box-direction: normal !important; flex-direction: row !important; justify-content: flex-end; align-items: center; }
+
+.layout-header .navbar.desktop .navbar-nav.mobile { display: none; font-size: 28px; }
+
+@media (min-width: 376px) and (max-width: 768px) { .layout-header .navbar.desktop .navbar-nav.mobile { display: flex; } }
+
+@media (min-width: 376px) and (max-width: 768px) { .layout-header .navbar.desktop .navbar-nav.desktop { display: none; } }
+
+.layout-header .navbar.desktop .navbar-nav .nav-item { font-weight: 500; font-size: 15px; color: #555; }
+
+.layout-header .navbar.desktop .navbar-nav .nav-item .nav-link { background-color: transparent; color: inherit; }
+
+.layout-header .navbar.desktop .navbar-nav .nav-item .nav-link::after { content: none; }
+
+.layout-header .navbar.desktop .navbar-nav .nav-item:hover, .layout-header .navbar.desktop .navbar-nav .nav-item.active, .layout-header .navbar.desktop .navbar-nav .nav-item.active-only { position: relative; font-weight: bold; color: #555; }
+
+.layout-header .navbar.desktop .navbar-nav .nav-item:hover .nav-link, .layout-header .navbar.desktop .navbar-nav .nav-item.active .nav-link, .layout-header .navbar.desktop .navbar-nav .nav-item.active-only .nav-link { background-color: transparent; color: inherit; }
+
+.layout-header .navbar.desktop .navbar-nav .nav-item:hover.line-none::after, .layout-header .navbar.desktop .navbar-nav .nav-item.active.line-none::after, .layout-header .navbar.desktop .navbar-nav .nav-item.active-only.line-none::after { content: none; }
+
+.layout-header .navbar.desktop .navbar-nav .nav-item.dropdown .dropdown-menu { position: absolute !important; float: none !important; border: 0; left: 50%; margin: 0; background-color: transparent; transform: translateX(-50%); }
+
+.layout-header .navbar.desktop .navbar-nav .nav-item.dropdown .dropdown-menu .dropdown-wrap { position: relative; padding: 16px 0; border-radius: 10px; box-shadow: 0 0 30px 0 rgba(198, 210, 221, 0.3); background-color: #fff; }
+
+.layout-header .navbar.desktop .navbar-nav .nav-item.dropdown .dropdown-menu .dropdown-wrap .dropdown-item { color: #455c73; background-color: transparent; opacity: 0.8; font-weight: 400; padding: 4px 20px; }
+
+.layout-header .navbar.desktop .navbar-nav .nav-item.dropdown .dropdown-menu .dropdown-wrap .dropdown-item:hover, .layout-header .navbar.desktop .navbar-nav .nav-item.dropdown .dropdown-menu .dropdown-wrap .dropdown-item:focus { opacity: 1; font-weight: 500; }
+
+.layout-header .navbar.desktop .navbar-nav .nav-item.dropdown .dropdown-menu .dropdown-wrap::before { content: ''; position: absolute; top: -20px; left: 50%; transform: translateX(-50%); border-top: 10px solid transparent; border-bottom: 10px solid #fff; border-right: 10px solid transparent; border-left: 10px solid transparent; }
+
+.layout-header .navbar.desktop .navbar-nav .nav-item.dropdown:hover .dropdown-menu, .layout-header .navbar.desktop .navbar-nav .nav-item.dropdown.active .dropdown-menu { display: block; }
+
+.layout-header .navbar.desktop .navbar-nav .nav-item.dropdown:hover .btn span + i, .layout-header .navbar.desktop .navbar-nav .nav-item.dropdown.active .btn span + i { transform: rotate(-180deg); }
+
+.layout-header .navbar.desktop .navbar-nav .nav-item a { vertical-align: text-top; }
+
+.layout-header .navbar.desktop .navbar-nav .nav-item a:focus { background-color: transparent; }
+
+.layout-header .navbar.desktop .navbar-nav .nav-item i { color: #fff; }
+
+.layout-header .navbar.desktop .navbar-nav .btn-download { display: block; width: 120px; height: 38px; line-height: 38px; border-radius: 38px; background-color: #ed8139; font-size: 16px; font-weight: 500; color: #00DEC3; margin: auto; margin-right: 36px; border: 1px solid #ed8139; }
+
+.layout-header .navbar.desktop .navbar-nav .btn-download:hover { background-color: #fff; border: 1px solid #26a757; color: #26a757; }
+
+.layout-header .navbar.desktop .navbar-nav .btn-download:focus { background-color: #26a757; border: 1px solid #26a757; color: #fff; }
+
+.layout-header .navbar.desktop .btn { display: flex; align-items: center; padding: 0 15px; margin: 8px 0; color: #000; font-size: rem(16); font-weight: 400 !important; border: 1px solid #333; border-radius: 10px; line-height: 28px; }
+
+.layout-header .navbar.desktop .btn.login { position: relative; border: 0; }
+
+.layout-header .navbar.desktop .btn.login img { width: 30px; padding: 5px; border-radius: 50%; background-color: #eff2f5; }
+
+.layout-header .navbar.desktop .btn.login span { font-weight: 500; }
+
+.layout-header .navbar.desktop .btn.login span + i { font-size: 12px; }
+
+.layout-header .navbar.desktop .btn img { width: 24px; }
+
+.layout-header .navbar.desktop .navbar-collapse { display: block !important; flex-basis: auto !important; }
+
+.layout-header .navbar.mobile { visibility: hidden; position: absolute; width: 100%; height: 0; top: 0px; background-color: #fff; border-bottom: 1px solid #333; z-index: 900; overflow: auto; padding: 0; flex-direction: column; transition: height 0.3s; }
+
+.layout-header .navbar.mobile.active { height: fit-content; }
+
+.layout-header .navbar.mobile .container { padding-top: 70px; padding-bottom: 20px; }
+
+.layout-header .navbar.mobile .navbar-nav { flex: 1; }
+
+.layout-header .navbar.mobile .navbar-nav li { height: fit-content; }
+
+.layout-header .navbar.mobile .navbar-nav li.active-only a { color: #26a757; font-weight: 600; text-decoration: none; }
+
+.layout-header .navbar.mobile .navbar-nav a:not(.btn-download) { display: block; width: 100%; padding: 10px 0; color: #777; text-decoration: none; }
+
+.layout-header .navbar.mobile .navbar-nav a:not(.btn-download):hover { text-decoration: none; }
+
+.layout-header .header-backdrop { z-index: 800; }
+
+@media (min-width: 376px) and (max-width: 768px) { .layout-header .navbar.desktop .navbar-nav .btn-download { width: 87px; height: 32px; line-height: 32px; font-size: 12px; margin-right: 24px; } }
+
+/* Footer */
+footer { background-color: #212b46; color: #fff; }
+
+/* */
+/* Footer */
+.layout-main { background-color: antiquewhite; margin-top: 50px; }
+
+.layout-main .banner { width: 100%; height: 400px; overflow: hidden; background-image: url("/static/images/library-banner.jpeg"); background-size: cover; box-sizing: border-box; position: relative; }
+
+.layout-main .banner .news { background-color: rgba(0, 0, 0, 0.7); color: #fff; width: 400px; padding: 10px; position: absolute; right: 20px; top: 50px; }
+
+/*# sourceMappingURL=main.css.map */
