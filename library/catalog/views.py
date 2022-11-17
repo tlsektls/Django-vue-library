@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from catalog.models import Book, Author, Publisher, BookInstance, Genre, NewsBoard
-from catalog.serializers import BookSerializer,  BookInstanceSerializer
+from map.models import Map
+from catalog.serializers import BookSerializer,  BookInstanceSerializer, AuthorSerializer, PublisherSerializer, NewsBoardSerializer
 
 from rest_framework import generics
 from rest_framework.response import Response
@@ -70,7 +71,7 @@ def index(request):
   # Render the HTML template index.html with the data in the context variable
   return render(request, 'index.html', context=context)
 
-from django.views import generic
+#from django.views import generic
 
 class BookListView(generics.RetrieveAPIView):
   queryset = Book.objects.all()
@@ -89,31 +90,29 @@ class BookInstanceListView(generics.RetrieveAPIView):
     return Response(serializer.data)
 
 
-
-class BookDetailView(generic.DetailView):
-  model = Book
-	
-def book_detail_view(request, primary_key):
-		try:
-			book = Book.objects.get(pk=primary_key)
-		except Book.DoesNotExist:
-			raise Http404('Book does not exist')
-		return render(request, 'views/Books.vue', context={'book': book})
+class AuthorListView(generics.RetrieveAPIView):
+  queryset = Author.objects.all()
+  
+  def get(self, request, *args, **kwargs):
+    queryset = self.get_queryset()
+    serializer = AuthorSerializer(queryset, many=True)
+    return Response(serializer.data)
 
 
-class AuthorListView(generic.ListView):
-  model = Author
+class PublisherListView(generics.RetrieveAPIView):
+  queryset = Publisher.objects.all()
+  
+  def get(self, request, *args, **kwargs):
+    queryset = self.get_queryset()
+    serializer = PublisherSerializer(queryset, many=True)
+    return Response(serializer.data)
 
-class AuthorDetailView(generic.DetailView):
-  model = Author
 
-class PublisherDetailView(generic.DetailView):
-  model = Publisher
+class NewsBoardListView(generics.RetrieveAPIView):
+  queryset = NewsBoard.objects.all()
+  
+  def get(self, request, *args, **kwargs):
+    queryset = self.get_queryset()
+    serializer = NewsBoardSerializer(queryset,many=True)
+    return Response(serializer.data)
 
-#class NewsBoardListView(generic.ListView):
-#  model = NewsBoard
-#  template_name = "catalog/NewsBoard.html"
-
-#class NewsBoardDetailView(generic.DetailView):
-#  model = NewsBoard
-#  template_name = "catalog/NewsBoard_detail.html"

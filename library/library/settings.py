@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 
 from pathlib import Path
 import os
+import datetime
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 #BASE_DIR = Path(__file__).resolve().parent.parent
@@ -44,6 +46,18 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
+
+    'rest_auth',
+    'rest_auth.registration',
+
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+
+    'user',
+    'rest_framework',
+    'rest_framework.authtoken',
 
     'catalog.apps.CatalogConfig', 
     'sass_processor',
@@ -52,6 +66,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -59,7 +74,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
 ]
 
 
@@ -69,6 +83,28 @@ CORS_ORIGIN_WHITELIST = [
     #'http://127.0.0.1/8080',
     'http://192.168.19.9:8080',
 ]
+
+CORS_ALLOW_METHODS = (
+    'DELETE',
+    'GET',
+    'OPTIONS',
+    'PATCH',
+    'POST',
+    'PUT',
+)
+CORS_ALLOW_HEADERS = (
+    'accept',
+    'accept-encoding',
+    'authorization',
+    'access-control-request-method',
+    'access-control-request-headers',
+    'content-type',
+    'dnt',
+    'origin',
+    'user-agent',
+    'x-csrftoken',
+    'x-requested-with',
+)
 
 
 ROOT_URLCONF = 'library.urls'
@@ -80,6 +116,7 @@ TEMPLATES = [
         #'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
+
             'context_processors': [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
@@ -101,8 +138,9 @@ DATABASES = {
     'default': {
         #'ENGINE': 'django.db.backends.sqlite3',
         #'NAME': BASE_DIR / 'db.sqlite3',
+        #'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'studydb',
+        'NAME': 'djangostudy',
         'USER': 'shin',
         'PASSWORD': '1110',
         'HOST': '127.0.0.1',
@@ -143,17 +181,32 @@ USE_L10N = True
 
 #USE_TZ = True
 
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+    ),
+}
+
+AUTH_USER_MODEL = 'user.User'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
 STATIC_URL = '/static/'
+STATICFILES_DIRS = [ os.path.join(BASE_DIR, 'static'),]
 
 STATICFILES_FINDERS  = [
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
     'sass_processor.finders.CssFinder',
 ]
+
+TEMPLATE_CONTEXT_PROCESSORS = (
+    'django.core.context_processors.request',
+)
 
 #SASS_OUTPUT_STYLE = 'compact'
 #SASS_PROCESSOR_ENABLED = True
@@ -180,3 +233,17 @@ STATICFILES_FINDERS  = [
 #    #'LOADER_CLASS': 'webpack_loader.loader.WebpackLoader',
 #  }
 #}
+
+JWT_AUTH = {
+# If the secret is wrong, it will raise a jwt.DecodeError telling you as such. You can still get at the payload by setting the JWT_VERIFY to False.
+'JWT_VERIFY': True,
+# You can turn off expiration time verification by setting JWT_VERIFY_EXPIRATION to False.
+# If set to False, JWTs will last forever meaning a leaked token could be used by an attacker indefinitely.
+'JWT_VERIFY_EXPIRATION': True,
+# This is an instance of Python's datetime.timedelta. This will be added to datetime.utcnow() to set the expiration time.
+# Default is datetime.timedelta(seconds=300)(5 minutes).
+'JWT_EXPIRATION_DELTA': datetime.timedelta(hours=1),
+'JWT_ALLOW_REFRESH': True,
+'JWT_AUTH_HEADER_PREFIX': 'JWT',
+}
+REST_USE_JWT = True

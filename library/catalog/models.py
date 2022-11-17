@@ -136,7 +136,6 @@ class Publisher(models.Model):
   name = models.CharField(max_length=60)
 
   def __str__(self):
-    """String for representing the Model object."""
     return self.name
 
 
@@ -159,13 +158,8 @@ class NewsBoard(models.Model):
   class Meta:
     ordering = ['news_title', 'news_date']
 
-  def get_absolute_url(self):
-    """Returns the url to access a particular NewsBoard instance."""
-    return reverse('newsBoard-detail', args=[str(self.id)])
-
   def __str__(self):
-    """String for representing the Model object."""
-    return f'{self.news_title}'
+    return self.news_title
 
 
 #from django.db import models

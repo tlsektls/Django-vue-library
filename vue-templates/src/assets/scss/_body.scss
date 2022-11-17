@@ -1,0 +1,29 @@
+.content {
+  .container {
+    padding: 40px 0 60px;
+  }
+  .none {
+    display: none !important;
+  }
+
+  background-color: antiquewhite;
+	.banner {
+		width: 100%;
+		height: 300px;
+		overflow: hidden;
+		background-image: url('@/assets/images/library-banner.jpeg');
+		background-size: cover;
+		box-sizing: border-box;
+		position: relative;
+		.news{
+			background-color: rgba(0, 0, 0, 0.7);
+			color: #fff;
+			width: 400px;
+			padding: 10px;
+			position: absolute;
+			right: 20px;
+			top: 50px;
+		}
+	}
+  
+}

@@ -1,6 +1,6 @@
 <template>
   <div class="posts">
-    <Navbar></Navbar> 
+    <Header></Header> 
       <div class="album py-5 bg-light">
         <h3>BOOKS</h3>
         <!--<div>{{APIData}}</div>-->
@@ -23,35 +23,49 @@
               <ul v-for="bookInstance in DIData" :key="bookInstance.id" class="col-md-4">
                 <li>{{ bookInstance }}</li>
               </ul>
+
+              <h3>BookInstance</h3>
+              <ul v-for="bookInstance in DIData" :key="bookInstance.id" class="col-md-4">
+                <li>{{ bookInstance }}</li>
+              </ul>
+
+              <h3>author</h3>
+              <ul v-for="author in AuthorData" :key="author.id" class="col-md-4">
+                <li>{{ author }}</li>
+              </ul>
             </div>
 
 
           </div>
       </div>
+
+    <Footer></Footer>
   </div>
 </template>
 
 <script>
   import { getAPI } from '../axios-api'
-  import Navbar from '../components/Navbar'
+  import Header from '../components/Header'
+  import Footer from '../components/Footer'
   export default {
     name: 'Books',
     data () {
       return {
           APIData: [],
           DIData: [],
+          AuthorData: [],
         }
     },
     components: {
-      Navbar
+      Header,
+      Footer
     },
     created () {
-        getAPI.get('/catalog/',)
+        getAPI.get('/book/',)
           .then(response => {
             console.log(response)
             console.log('Post API has recieved data')
             this.APIData = response.data
-            //console.log(response.data)
           })
           .catch(err => {
             console.log(err)
@@ -62,7 +76,16 @@
             console.log(response)
             console.log('Post API has recieved data')
             this.DIData = response.data
-            //console.log(response.data)
+          })
+          .catch(err => {
+            console.log(err)
+          })
+
+        getAPI.get('/author/',)
+          .then(response => {
+            console.log(response)
+            console.log('Post API has recieved data')
+            this.AuthorData = response.data
           })
           .catch(err => {
             console.log(err)

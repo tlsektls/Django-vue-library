@@ -1,0 +1,87 @@
+// common
+
+
+// Color system
+
+$white: #fff !default;
+$gray-100: #15222F !default;
+$gray-200: #333D4B !default;
+$gray-300: #7D8896 !default;
+$gray-400: #CCD3DB !default;
+$gray-500: #ECEFF1 !default;
+$gray-600: #F9F9FA !default;
+$gray-700: #FFFFFF !default;
+$black: #000 !default;
+
+$primary: #3b7eec;
+$secondary: #555b63;
+$success: #38c191;
+$info: #17a2b8;
+$warning: #ff9e57;
+$danger: #ff576a;
+$gray: $gray-500;
+$light: $gray-100;
+$dark: $gray-700;
+
+
+// font awesome
+//@import "@/../@fortawesome/fontawesome-free/scss/fontawesome.scss";
+
+// Checkbox
+.ta-checkbox-wrap {
+  input[type='checkbox'] {
+    & + label {
+      position: relative;
+      margin-left: 28px;
+
+      &::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: -28px;
+        transform: translateY(-50%);
+        width: 18px;
+        height: 18px;
+        border-radius: 3px;
+        border: 1px solid #cad1e0;
+        background: transparent linear-gradient(180deg, #ffffff 0%, #eaebec 100%) 0% 0% no-repeat padding-box;
+      }
+    }
+    &:checked {
+      & + label {
+        color: $primary;
+        vertical-align: middle;
+
+        &::before {
+          background: $primary;
+          border: 0;
+        }
+        &::after {
+          content: "";
+          position: absolute;
+          display: block;
+          box-sizing: border-box;
+          left: -25px;
+          top: -10px;
+          width: 6px;
+          height: 10px;
+          border-width: 0 2px 2px 0;
+          border-style: solid;
+          transform-origin: bottom left;
+          transform: rotate(45deg);
+          color: #fff;
+        }
+      }
+    }
+    &:focus {
+      & + label {
+        &::before {
+          transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+          outline: 0;
+          border-color: #80bdff;
+          box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+        }
+      }
+    }
+  }
+}
