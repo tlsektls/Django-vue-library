@@ -1,3 +1,210 @@
-.header {
-	background-color: aqua;
+@import "@/assets/scss/common.scss";
+
+.layout-header {
+  background-color: #fff;
+  box-shadow: 0 3px 30px 0 rgba(198, 210, 221, 0.3);
+
+  .navbar.desktop {
+    padding: rem(20) 0;
+
+    .navbar-brand {
+      display: block;
+
+      img {
+        height: 40px;
+      }
+    }
+
+    .navbar-toggler {
+      padding: 0;
+      font-size: 32px;
+      color: $primary;
+    }
+
+    .navbar-nav {
+      box-orient: horizontal !important;
+      box-direction: normal !important;
+      flex-direction: row !important;
+      justify-content: flex-end;
+
+      &.mobile {
+        display: none;
+        font-size: 28px;
+
+        @media (max-width: 787px) {
+          display: flex;
+        }
+      }
+      &.desktop {
+        @media (max-width: 787px) {
+          display: none;
+        }
+      }
+      .nav-item {
+        .nav-link {
+          font-weight: 500;
+          color: $gray;
+
+          &::after {
+            content: none;
+          }
+        }
+
+        &:hover,
+        &.active,
+        &.active-only {
+          position: relative;
+
+          .nav-link {
+            color: $primary;
+          }
+
+          // &::after {
+          //   content: "";
+          //   position: absolute;
+          //   left: 20px;
+          //   bottom: -26px;
+          //   width: calc(100% - 40px);
+          //   height: 3px;
+          //   background-color: $primary;
+          // }
+
+          &.line-none {
+            &::after {
+              content: none;
+            }
+          }
+        }
+
+        &.dropdown {
+          .dropdown-menu {
+            position: absolute !important;
+            float: none !important;
+            border: 0;
+            left: 50%;
+            margin: 0;
+            background-color: transparent;
+            transform: translateX(-50%);
+
+            .dropdown-wrap {
+              position: relative;
+              padding: 16px 0;
+              border-radius: 10px;
+              box-shadow: 0 0 30px 0 rgba(198, 210, 221, 0.3);
+              background-color: #fff;
+
+              .dropdown-item {
+                color: #455c73;
+                background-color: transparent;
+                opacity: 0.8;
+                // text-align: center;
+                font-weight: 400;
+                padding: 4px 20px;
+
+                &:hover,
+                &:focus {
+                  opacity: 1;
+                  font-weight: 500;
+                }
+              }
+
+              &::before {
+                content: '';
+                position: absolute;
+                top: -20px;
+                left: 50%;
+                transform: translateX(-50%);
+                border-top: 10px solid transparent;
+                border-bottom: 10px solid #fff;
+                border-right: 10px solid transparent;
+                border-left: 10px solid transparent;
+              }
+            }
+          }
+
+          &:hover,
+          &.active {
+            .dropdown-menu {
+              display: block;
+            }
+            .btn {
+              span + i {
+                transform: rotate(-180deg);
+              }
+            }
+          }
+        }
+      }
+    }
+
+    .btn {
+      display: flex;
+      align-items: center;
+      padding: 0 15px;
+      margin: 8px 0;
+      color: $gray-600;
+      font-size: rem(16);
+      font-weight: 400 !important;
+      border: 1px solid $border-color;
+      border-radius: $border-radius;
+      line-height: 28px;
+
+      &.login {
+        position: relative;
+        border: 0;
+
+        img {
+          width: 30px;
+          padding: 5px;
+          border-radius: 50%;
+          background-color: #eff2f5;
+        }
+
+        span {
+          font-weight: 500;
+
+          & + i {
+            font-size: 12px;
+          }
+        }
+      }
+
+      img {
+        width: 24px;
+      }
+    }
+
+    .navbar-collapse {
+      display: block !important;
+      flex-basis: auto !important;
+    }
+  }
+  .navbar.mobile {
+    visibility: hidden;
+    position: absolute;
+    right: -400px;
+    top: 0;
+    width: 400px;
+    max-width: 100%;
+    height: 100vh;
+    height: calc(var(--vh, 1vh) * 100);
+    background-color: #fff;
+    transition: right 0.3s;
+    z-index: $zindex-modal;
+    overflow: auto;
+    padding: 40px 0;
+    flex-direction: column;
+    transition: right 0.3s;
+
+    &.active {
+      right: 0;
+    }
+    .navbar-nav {
+      flex: 1;
+
+      .btn-navbar-close {
+        font-size: 28px;
+      }
+    }
+  }
 }

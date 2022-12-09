@@ -38,18 +38,18 @@
       Header,
       Footer
     },
-    created () {
-        getAPI.get('/newsboard/',)
-          .then(response => {
-            console.log(response)
-            console.log('newsboard API has recieved data')
-            this.NewsBoardData = response.data
-          })
-          .catch(err => {
-            console.log(err)
-          });
+    //created () {
+    //    getAPI.get('/newsboard/',)
+    //      .then(response => {
+    //        console.log(response)
+    //        console.log('newsboard API has recieved data')
+    //        this.NewsBoardData = response.data
+    //      })
+    //      .catch(err => {
+    //        console.log(err)
+    //      });
 
-    }
+    //}
   }
 </script>
 

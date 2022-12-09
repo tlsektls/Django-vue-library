@@ -1,3 +1,6 @@
 @charset "utf-8";
-@import 'header';
-@import 'body';
+//@import "@/assets/scss/common.scss";
+
+@import "@/assets/scss/header.scss";
+@import "@/assets/scss/body.scss";
+@import "@/assets/scss/footer.scss";

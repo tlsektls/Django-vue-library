@@ -13,7 +13,7 @@ $gray-600: #F9F9FA !default;
 $gray-700: #FFFFFF !default;
 $black: #000 !default;
 
-$primary: #3b7eec;
+$primary: #488970;
 $secondary: #555b63;
 $success: #38c191;
 $info: #17a2b8;
@@ -23,6 +23,9 @@ $gray: $gray-500;
 $light: $gray-100;
 $dark: $gray-700;
 
+$border-color: $gray-400;
+$border-radius: 5px;
+$zindex-modal: 1000;
 
 // font awesome
 //@import "@/../@fortawesome/fontawesome-free/scss/fontawesome.scss";
@@ -85,3 +88,13 @@ $dark: $gray-700;
     }
   }
 }
+
+body {
+  font-family: 'Pretendard', sans-serif;
+}
+
+button.normal {
+  background-color: transparent;
+  border: none;
+}
+a {text-decoration: none; color: inherit;}
