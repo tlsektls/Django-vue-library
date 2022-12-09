@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Book, Genre, BookInstance, Author, Publisher, NewsBoard
+from .models import Book, Genre, BookInstance, Author, Publisher
 
 
 class genreSerializer(serializers.ModelSerializer):
@@ -8,18 +8,26 @@ class genreSerializer(serializers.ModelSerializer):
         fields = ('name',)
 
 
+class AuthorSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Author
+        fields = "__all__"
+
+
 class BookSerializer(serializers.ModelSerializer):
     language = serializers.ReadOnlyField(source='language.name')
+    publisher = serializers.ReadOnlyField(source='publisher.name')
     genre = genreSerializer(many=True, allow_null=True)
+    author = AuthorSerializer(many=True, allow_null=True)
     image = serializers.ImageField(use_url=True)
 
-    author = serializers.SerializerMethodField()
-    def get_author(self, obj):
-        return f'{obj.author.last_name} {obj.author.first_name}'
+    #author = serializers.SerializerMethodField()
+    #def get_author(self, obj):
+    #    return f'{obj.author.last_name} {obj.author.first_name}'
 
     class Meta:
         model = Book
-        fields = ('title', 'author', 'genre', 'language', 'image')
+        fields = "__all__"
 
 
 class BookInstanceSerializer(serializers.ModelSerializer):
@@ -30,11 +38,6 @@ class BookInstanceSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
-class AuthorSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Author
-        fields = "__all__"
-
 
 class PublisherSerializer(serializers.ModelSerializer):
     class Meta:
@@ -42,9 +45,9 @@ class PublisherSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
-class NewsBoardSerializer(serializers.ModelSerializer):
+class GenreSerializer(serializers.ModelSerializer):
     class Meta:
-        model = NewsBoard
+        model = Genre
         fields = "__all__"
 
 

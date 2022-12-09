@@ -1,10 +1,13 @@
 from django.shortcuts import render
-from catalog.models import Book, Author, Publisher, BookInstance, Genre, NewsBoard
-from map.models import Map
-from catalog.serializers import BookSerializer,  BookInstanceSerializer, AuthorSerializer, PublisherSerializer, NewsBoardSerializer
+from .models import Book, Author, Publisher, BookInstance, Genre
+from board.models import Map
+from .serializers import BookSerializer,  BookInstanceSerializer, AuthorSerializer, PublisherSerializer, GenreSerializer
+from django.db.models import  Q
 
-from rest_framework import generics
+from rest_framework import generics, viewsets
 from rest_framework.response import Response
+#from django_filters.rest_framework import DjangoFilterBackend
+#from django_filters import ModelMultipleChoiceFilter
 
 
 def index(request):
@@ -39,7 +42,7 @@ def index(request):
   #result_5_news = NewsBoard.objects.order_by('-created_document_timestamp').first()
 
   #news = NewsBoard.objects.filter(datetime_attr__date=datetime.date(2022, 6, 26))
-  news = NewsBoard.objects.all()[:3]
+  #news = NewsBoard.objects.all()[:3]
   #images = BookImage.objects.all()
 
   address = Map.objects.all()
@@ -62,7 +65,6 @@ def index(request):
 		'string_genre_all': string_genre_all,
 
     'num_visits': num_visits,
-    'news': news,
     #'images': images,
     'address': address,
     #'result_5_news': result_5_news,
@@ -81,6 +83,53 @@ class BookListView(generics.RetrieveAPIView):
     serializer = BookSerializer(queryset, many=True)
     return Response(serializer.data)
 
+
+
+class BookSuggestView(generics.ListCreateAPIView):
+  serializer_class = BookSerializer
+  queryset = Book.objects.all()
+
+  def get(self, request):
+    title = request.GET.get("title")
+    author = request.GET.get("author")
+
+    if title is not None:
+      title = title.split(',')
+      q = Q()
+      for i in title: 
+        q.add(Q(title=i), q.OR)
+      queryset = Book.objects.filter(q)
+      print(q)
+      print(queryset)
+      serializer = BookSerializer(queryset, many=True)
+      return Response(serializer.data)
+
+    if author is not None:
+      #(AND: ('title', '구름을 키우는 방법'))
+      #q = Q()
+      #q.add(Q(author__name=author), q.OR)
+      #q.add(Q(author=author), q.OR)
+      queryset = Book.objects.filter(author__name=author)
+      #print(q)
+      print(queryset)
+      #print(queryset)
+      serializer = BookSerializer(queryset, many=True)
+      return Response(serializer.data)
+
+    
+
+class BookNewView(generics.ListCreateAPIView):
+  serializer_class = BookSerializer
+  queryset = Book.objects.all()
+
+  def get(self, request):
+    #date = request.GET.get("create_date")
+    queryset = Book.objects.order_by('-create_date')[:3]
+    serializer = BookSerializer(queryset, many=True)
+    return Response(serializer.data)
+    
+
+
 class BookInstanceListView(generics.RetrieveAPIView):
   queryset = BookInstance.objects.all()
   
@@ -92,11 +141,13 @@ class BookInstanceListView(generics.RetrieveAPIView):
 
 class AuthorListView(generics.RetrieveAPIView):
   queryset = Author.objects.all()
+  serializer_class = AuthorSerializer
   
-  def get(self, request, *args, **kwargs):
-    queryset = self.get_queryset()
-    serializer = AuthorSerializer(queryset, many=True)
-    return Response(serializer.data)
+  #queryset = Author.objects.all()
+  #def get(self, request, *args, **kwargs):
+  #  queryset = self.get_queryset()
+  #  serializer = AuthorSerializer(queryset, many=True)
+  #  return Response(serializer.data)
 
 
 class PublisherListView(generics.RetrieveAPIView):
@@ -108,11 +159,10 @@ class PublisherListView(generics.RetrieveAPIView):
     return Response(serializer.data)
 
 
-class NewsBoardListView(generics.RetrieveAPIView):
-  queryset = NewsBoard.objects.all()
+class GenreListView(generics.RetrieveAPIView):
+  queryset = Genre.objects.all()
   
   def get(self, request, *args, **kwargs):
     queryset = self.get_queryset()
-    serializer = NewsBoardSerializer(queryset,many=True)
+    serializer = GenreSerializer(queryset, many=True)
     return Response(serializer.data)
-

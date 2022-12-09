@@ -1,7 +1,9 @@
 from django.db import models
+from django.utils.timezone import now
 from django.urls import reverse
 import uuid
 
+from django.utils.translation import ugettext_lazy as _
 
 # Create your models here.
 
@@ -31,18 +33,19 @@ class Meta:
 class Book(models.Model):
   """Model representing a book (but not a specific copy of a book)."""
   title = models.CharField(max_length=200)
-  author = models.ForeignKey('Author', on_delete=models.SET_NULL, null=True)
+  author = models.ManyToManyField('Author', related_name='b_author')
   publisher = models.ForeignKey(
       'Publisher', on_delete=models.SET_NULL, null=True)
 
+  create_date = models.DateField(default=now)
 
   summary = models.TextField(
-      max_length=1000, help_text='Enter a brief description of the book')
+      max_length=1000, help_text='책소개 혹은 줄거리를 작성해 주세요')
   isbn = models.CharField(
       'ISBN', max_length=13, help_text='13 Character <a href="https://www.isbn-international.org/content/what-isbn">ISBN number</a>')
 
   genre = models.ManyToManyField(
-      'Genre', related_name='booksg')
+      'Genre', related_name='b_genre')
 
   language = models.ForeignKey(
       'Language', on_delete=models.SET_NULL, null=True, related_name='books')
@@ -64,11 +67,18 @@ class Book(models.Model):
     """Returns the url to access a detail record for this book."""
     return reverse('book-detail', args=[str(self.id)])
 
+  def display_author(self):
+    return ', '.join(author.name for author in self.author.all())
+    
   def display_genre(self):
     """Create a string for the Genre. This is required to display genre in Admin."""
     return ', '.join(genre.name for genre in self.genre.all()[:3])
 
-	# display_genre.short_description = 'Genre'
+  def visited(request):
+    "#Number of visits to this view, as counted in the session variable."
+    num_visits = request.session.get('num_visits', 0)
+    request.session['num_visits'] = num_visits + 1
+    return num_visits
 
 
 class BookInstance(models.Model):
@@ -114,13 +124,14 @@ class Language(models.Model):
 
 class Author(models.Model):
   """Model representing an author."""
-  first_name = models.CharField(max_length=100)
-  last_name = models.CharField(max_length=100)
+  name = models.CharField(max_length=100)
   date_of_birth = models.DateField(null=True, blank=True)
   date_of_death = models.DateField('Died', null=True, blank=True)
+  #info = models.TextField(max_length=1000, help_text='저자 소개를 작성해 주세요', null=True, blank=True)
+  intro = models.TextField(max_length=1000, help_text='저자 소개를 작성해 주세요', null=True, blank=True)
 
   class Meta:
-    ordering = ['last_name', 'first_name']
+    ordering = ['name']
 
   def get_absolute_url(self):
     """Returns the url to access a particular author instance."""
@@ -128,7 +139,7 @@ class Author(models.Model):
 
   def __str__(self):
     """String for representing the Model object."""
-    return f'{self.last_name}, {self.first_name}'
+    return self.name
 
 
 class Publisher(models.Model):
@@ -148,18 +159,6 @@ class Genre(models.Model):
     """String for representing the Model object."""
     return self.name
 
-
-class NewsBoard(models.Model):
-  """Model representing an NewsBoard."""
-  news_title = models.TextField(default="도서관 뉴스")
-  news_content = models.TextField(default="도서관 뉴스")
-  news_date = models.DateField(null=True, blank=True)
-
-  class Meta:
-    ordering = ['news_title', 'news_date']
-
-  def __str__(self):
-    return self.news_title
 
 
 #from django.db import models

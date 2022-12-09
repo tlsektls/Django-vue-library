@@ -36,7 +36,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -46,29 +45,26 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django.contrib.sites',
-
-    'rest_auth',
-    'rest_auth.registration',
-
-    'allauth',
-    'allauth.account',
-    'allauth.socialaccount',
-
-    'user',
+    
+# DRF
     'rest_framework',
     'rest_framework.authtoken',
+    'django_filters',
 
-    'catalog.apps.CatalogConfig', 
-    'sass_processor',
-    'map.apps.MapConfig',
+    'djoser',
     'corsheaders',
+    
+    'catalog.apps.CatalogConfig', 
+    #'sass_processor',
+    'board.apps.BoardConfig',
 ]
 
+#SITE_ID = 1
+
 MIDDLEWARE = [
-    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -77,12 +73,16 @@ MIDDLEWARE = [
 ]
 
 
-#CORS_ORIGIN_ALLOW_ALL = False
+#CORS_ALLOW_ORIGINS = ['http://127.0.0.1/8000', 'http://localhost:8080', 'http://192.168.19.9:8080']
+
+CORS_ORIGIN_ALLOW_ALL = False
 CORS_ORIGIN_WHITELIST = [
     'http://localhost:8080',
-    #'http://127.0.0.1/8080',
+    'http://127.0.0.1:8080',
     'http://192.168.19.9:8080',
+    'http://192.168.0.68:8080',
 ]
+
 
 CORS_ALLOW_METHODS = (
     'DELETE',
@@ -116,7 +116,6 @@ TEMPLATES = [
         #'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
-
             'context_processors': [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
@@ -138,7 +137,7 @@ DATABASES = {
     'default': {
         #'ENGINE': 'django.db.backends.sqlite3',
         #'NAME': BASE_DIR / 'db.sqlite3',
-        #'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'djangostudy',
         'USER': 'shin',
@@ -182,15 +181,16 @@ USE_L10N = True
 #USE_TZ = True
 
 REST_FRAMEWORK = {
-    'DEFAULT_PERMISSION_CLASSES': (
-        'rest_framework.permissions.IsAuthenticated',
-    ),
+    #'DEFAULT_PERMISSION_CLASSES': (
+    #    'rest_framework.permissions.IsAuthenticated',
+    #),
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
+        'rest_framework.authentication.TokenAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
     ),
 }
 
-AUTH_USER_MODEL = 'user.User'
+#AUTH_USER_MODEL = 'user.CustomUser'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/

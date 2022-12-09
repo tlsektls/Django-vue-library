@@ -2,14 +2,14 @@ from django.shortcuts import render, redirect
 from django.views.decorators.csrf import csrf_exempt
 from datetime import datetime
 from django.http import HttpResponse, JsonResponse
-from .models import User
+from .models import CustomUser
 
 
 from rest_framework import generics
 from rest_framework.response import Response
 
 class UserIndex(generics.RetrieveAPIView):
-  queryset = User.objects.all()
+  queryset = CustomUser.objects.all()
   
   def get(self, request, *args, **kwargs):
     queryset = self.get_queryset()
@@ -42,13 +42,13 @@ def user_reg(request):
         email = request.POST["email"]
  
         # 회원가입 중복체크
-        rs = User.objects.filter(user_id=user_id)
+        rs = CustomUser.objects.filter(user_id=user_id)
         if rs.exists():
             context['message'] = user_id + "가 중복됩니다."
             return render(request, 'user/user_reg.html', context)
  
         else:
-            User.objects.create(
+            CustomUser.objects.create(
                 user_id=user_id, passwd=passwd,  name=name, email=email, usage_flag='y',
                 reg_date=datetime.now(), update_date=datetime.now())
             context['message'] = name + "님 회원가입 되었습니다."
@@ -65,7 +65,7 @@ def user_login(request):
         passwd = request.POST.get('passwd')
  
         # 로그인 체크하기
-        rs = User.objects.filter(user_id=user_id, passwd=passwd).first()
+        rs = CustomUser.objects.filter(user_id=user_id, passwd=passwd).first()
         print(user_id + '/' + passwd)
         print(rs)
  

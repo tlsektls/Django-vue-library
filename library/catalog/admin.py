@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Author, Publisher, Genre, Book, BookInstance, Language, NewsBoard 
+from .models import Author, Publisher, Genre, Book, BookInstance, Language
 
 # admin.site.register(Book)
 # admin.site.register(Author)
@@ -7,24 +7,15 @@ admin.site.register(Genre)
 # admin.site.register(BookInstance)
 admin.site.register(Publisher)
 admin.site.register(Language)
-#admin.site.register(NewsBoard)
 #admin.site.register(BookImage)
 
 # Define the admin class
 
 
-#@admin.register(NewsBoard)
-class NewsBoardAdmin(admin.ModelAdmin):
-    list_display = ('news_title' , 'news_date')
-    fields = ['news_title', 'news_content', 'news_date']
-    
-admin.site.register(NewsBoard, NewsBoardAdmin)
-
-
 class AuthorAdmin(admin.ModelAdmin):
-    list_display = ('last_name', 'first_name',
+    list_display = ('name', 'id', 
                     'date_of_birth', 'date_of_death')
-    fields = ['first_name', 'last_name', ('date_of_birth', 'date_of_death')]
+    fields = ['name', ('date_of_birth', 'date_of_death'), 'intro']
 
 # Register the admin class with the associated model
 admin.site.register(Author, AuthorAdmin)
@@ -37,7 +28,7 @@ class BooksInstanceInline(admin.TabularInline):
 
 @admin.register(Book)
 class BookAdmin(admin.ModelAdmin):
-    list_display = ('title', 'author', 'publisher', 'display_genre')
+    list_display = ('title', 'pk', 'create_date', 'display_author', 'publisher', 'display_genre')
     inlines = [BooksInstanceInline]
 
     # genre는 ManyToManyField이기 때문에 직접적으로 특정할 수 없음.
@@ -56,3 +47,4 @@ class BookInstanceAdmin(admin.ModelAdmin):
             'fields': ('status', 'due_back')
         }),
     )
+
