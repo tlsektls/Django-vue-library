@@ -38,7 +38,6 @@ class BookInstanceSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
-
 class PublisherSerializer(serializers.ModelSerializer):
     class Meta:
         model = Publisher

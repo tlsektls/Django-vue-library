@@ -6,6 +6,7 @@ from django.conf.urls.static import static
 from django.conf import settings
 
 from board import views
+from user.views import tokenUserView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -13,13 +14,15 @@ urlpatterns = [
 
     path('api/v1/', include('djoser.urls')),
     path('api/v1/', include('djoser.urls.jwt')),
+    path('api/obtain_auth_token', tokenUserView.as_view()),
 
 
 	path('map/', views.MapView.as_view(), name='map'),
 	path('offday/', views.OffDayView.as_view(), name='offday'),
 	path('newsboard/', views.NewsBoardListView.as_view(), name='newsboard'),
-
 	path('newsboard/news/<int:pk>/', views.NewsBoardOneView.as_view(), name='newsboard-news'),
+	path('suggestboard/', views.SuggestBoardListView.as_view(), name='suggestboard'),
+	path('suggestboard/suggest/<int:pk>/', views.SuggestBoardOneView.as_view(), name='suggestboard-news'),
 
     #path('user/', include('user.urls')),
     #path("user-auth/", include("rest_framework.urls")),

@@ -8,10 +8,16 @@
 				padding: 20px 10px;
 				background-color: #fff;
 				border-radius: 12px;
+				height: 100%;
 				h3 {
-					font-size: 2.25rem;
+					font-size: 1.75rem;
 					margin-bottom: 1rem;
-					text-indent: 20px;
+					text-indent: 16px;
+					position: relative;
+					a {
+						position: absolute;
+						right: 10px;
+					}
 				}
 			}
 		} 
@@ -106,7 +112,7 @@
 			border-bottom: 1px solid $gray-400;
 			position: relative;
 			button {
-				font-size: 1.8rem;
+				font-size: 1.75rem;
 				font-weight: 600;
 				color: $gray-300;
 				padding: 0 10px;
@@ -130,7 +136,7 @@
 				right: 0;
 				top: 50%;
 				transform: translateY(-50%);
-				font-size: 1.5rem;
+				font-size: 1.25rem;
 				background-color: $primary;
 				color: #fff;
 				padding: 10px 20px;
@@ -150,7 +156,7 @@
 					}
 				}
 				p {
-					font-size: 1.5rem;
+					font-size: 1rem;
 					font-weight: 500;
 					margin: 0.7rem 0 0;
 					width: 100%;
@@ -219,6 +225,27 @@
 			img {
 				display: block;
 				width: 200px;
+			}
+		}
+	}
+
+	// 장르별 필터
+	.gerne-sel {
+		.gerne-selected{
+			.sel {
+				position: relative;
+				width: fit-content;
+				height: 40px;
+				line-height: 40px;
+				padding: 0 8px;
+				border: 1px solid $border-color;
+				border-radius: 5px;
+			}
+			.sel + .sel {
+				margin-left: 10px;
+			}
+			svg {
+				margin-left: 8px;
 			}
 		}
 	}

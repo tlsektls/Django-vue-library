@@ -47,11 +47,12 @@
         localStorage.removeItem("access")
 
         const formData = {
+          //username: this.email,
           username: this.email,
           password: this.password,
         }
 
-        console.log(formData)
+        //console.log(formData)
 
         getAPI.post('/api/v1/jwt/create', formData)
         .then(response => {

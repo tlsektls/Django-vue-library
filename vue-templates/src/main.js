@@ -14,9 +14,9 @@ import store from './store'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faPlus, faCalendar, faCircleUser, faUserPlus, faMagnifyingGlass, faChevronRight, faChevronLeft} from '@fortawesome/free-solid-svg-icons'
 import { faLeanpub } from '@fortawesome/free-brands-svg-icons'
-//import { faCircleUser } from '@fortawesome/free-regular-svg-icons'
+import { faCircleXmark } from '@fortawesome/free-regular-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-library.add(faPlus, faCalendar, faCircleUser, faUserPlus, faMagnifyingGlass, faChevronRight, faChevronLeft, faLeanpub)
+library.add(faPlus, faCalendar, faCircleUser, faUserPlus, faMagnifyingGlass, faChevronRight, faChevronLeft, faLeanpub, faCircleXmark)
 // 위에 createApp을 통해 생성한 Vue Application 인스턴스의 component API 활용
 const app = createApp(App);
 

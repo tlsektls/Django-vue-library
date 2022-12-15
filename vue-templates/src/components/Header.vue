@@ -23,19 +23,25 @@
           <!-- 비 로그인 -->
           <li class="nav-item">
             <router-link :to = "{ name:'Login' }">
-              <font-awesome-icon icon="fa-solid fa-circle-user" />
+              <!--<font-awesome-icon icon="fa-solid fa-circle-user" />-->
               Login
               </router-link> 
           </li>
           <li> | </li>
           <li class="nav-item">
             <router-link :to = "{ name:'Singup' }">
-              <font-awesome-icon icon="fa-solid fa-user-plus" />
+              <!--<font-awesome-icon icon="fa-solid fa-user-plus" />-->
               Singup
-              </router-link>
+            </router-link>
           </li>
           <li class="nav-item">
-            <button @click="this.$parent.logout()">Logout</button>
+            <button @click="logout()">Logout</button>
+          </li>
+          <li class="nav-item">
+            <router-link :to = "{ name:'User' }">
+              <font-awesome-icon icon="fa-solid fa-circle-user" />
+              내 도서
+            </router-link>
           </li>
           <!-- 로그인 -->
           <!--<li class="nav-item line-none dropdown">
@@ -85,9 +91,48 @@
 </template>
 
 <script>
-  export default {
-    name: 'Header',
-  }
+import { getAPI } from '@/axios-api'
+
+export default {
+  name: 'Header',
+
+  data () {
+    return {
+      login: [],
+    }
+  },
+
+  mounted() {
+    setInterval(() => {
+      this.getAccess()
+    }, 6000000) //6000000
+  },
+  methods: {
+    getAccess(e) {
+      const accessData = {
+        refresh: this.$store.state.refresh
+      }
+      getAPI.post('api/v1/jwt/refresh', accessData)
+      .then(response => {
+        const access = response.data.access
+        localStorage.setItem("access", access)
+        this.$store.commit('setAccess', access)
+      })
+      .catch(error => {
+        console.log("refresh", error)
+      })
+    },
+    logout() {
+      this.getAccess()
+      console.log("LOGOUT")
+      localStorage.setItem("access", '')
+      localStorage.setItem("refresh", '')
+      this.$store.commit('removeToken')
+      this.$router.push("/")
+    },
+  },
+}
+
 </script>
 
 //<style lang="scss">

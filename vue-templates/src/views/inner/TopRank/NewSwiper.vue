@@ -21,8 +21,6 @@ export default {
   created () {
       getAPI.get('/bookNew/')
         .then(response => {
-          console.log('new-book API has recieved data')
-          console.log(response)
           this.bookData = response.data
         })
         .catch(err => {

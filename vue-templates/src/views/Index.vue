@@ -22,12 +22,12 @@
       <div class="container">
 
         <div class="row g-4">
-          <div class="col-9">
+          <div class="col-xl-9 col-lg-12">
             <!-- 추천 / 신규 / 인기 도서 top3 slider -->
             <TopRank></TopRank>
-
           </div>
-          <div class="col-3">
+
+          <div class="col-xl-3 col-lg-6">
             <div class="schedule">
               <h3>도서관 일정</h3>
               <div class="inner">
@@ -39,22 +39,22 @@
             </div>
           </div>
 
-          <div class="col-4">
+          <div class="col-xl-4 col-lg-6">
             <div class="news">
-              <h3>최근 도서관 뉴스 <a href="">></a></h3>
-              <News></News>
+              <h3>최근 도서관 뉴스 <router-link :to="{name:'NewsBoard'}" class="ml-auto"><font-awesome-icon icon="fa-solid fa-plus" /></router-link></h3>
+              <NewsList></NewsList>
             </div>
           </div>
-          <div class="col-4">
-            <div class="notice">
-              <h3>건의 게시판</h3>
+          <div class="col-xl-4 col-lg-6">
+            <div class="suggest">
+              <h3>건의 게시판 <router-link :to="{name:'NewsBoard'}" class="ml-auto"><font-awesome-icon icon="fa-solid fa-plus" /></router-link></h3>
               <div class="inner">
                 
               </div>
             </div>
           </div>
 
-          <div class="col-4">
+          <div class="col-xl-4 col-lg-6">
             <div class="map">
               <h3>도서관 위치</h3>
               <div class="inner">
@@ -65,7 +65,6 @@
 
 
         </div>
-
 
 
       </div>
@@ -86,6 +85,7 @@
   import TopRank from '@/views/inner/TopRank/TopRank'
   import SearchBar from '@/views/inner/SearchBar'
   import Datepicker from 'vuejs3-datepicker';
+  import NewsList from '@/views/board/_News'
 
 // Import Swiper styles
 import "swiper/css";
@@ -110,6 +110,7 @@ import "swiper/css/navigation";
       TopRank,
       SearchBar,
       Datepicker,
+      NewsList
     },
     beforeCreate() {
       this.$store.commit('initializerStore')
@@ -121,52 +122,13 @@ import "swiper/css/navigation";
       }
     },
     created () {
-      getAPI.get('/book/')
-        .then(response => {
-          console.log('book API has recieved data')
-          console.log(response)
-          this.IndexData = response.data
-        })
-        .catch(err => {
-          console.log(err)
-        })
       getAPI.get('/offday/')
         .then(response => {
-          console.log('offday API has recieved data')
-          console.log(response)
           this.offDayData = response.data
         })
         .catch(err => {
           console.log(err)
         })
-    },
-    mounted() {
-      setInterval(() => {
-        this.getAccess()
-      }, 6000000) //6000000
-    },
-    methods: {
-      getAccess(e) {
-        const accessData = {
-          refresh: this.$store.state.refresh
-        }
-        getAPI.post('api/v1/jwt/refresh', accessData)
-        .then(response => {
-          const access = response.data.access
-          localStorage.setItem("access", access)
-          this.$store.commit('setAccess', access)
-        })
-        .catch(error => {
-          console.log("refresh", error)
-        })
-      },
-      logout() {
-        this.getAccess()
-        console.log("LOGOUT")
-        localStorage.setItem("access", '')
-        localStorage.setItem("refresh", '')
-        this.$store.commit('removeToken')
-      },
     },
     computed: {
       getOffDay() {

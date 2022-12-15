@@ -14,34 +14,44 @@
     <div class="search">
       <div class="d-flex search-bar">
         <div class="btn-group">
-          <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-            제목
+          <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false" :value="this.searchCategory.value" >
+            {{this.searchCategory.text}}
           </button>
           <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-            <li><a class="dropdown-item" href="#">제목</a></li>
-            <li><a class="dropdown-item" href="#">저자</a></li>
-            <li><a class="dropdown-item" href="#">출판사</a></li>
+            <li><a class="dropdown-item" href="#" @click="selCategory($event)" value="title">제목</a></li>
+            <li><a class="dropdown-item" href="#" @click="selCategory($event)" value="author">저자</a></li>
+            <li><a class="dropdown-item" href="#" @click="selCategory($event)" value="publisher">출판사</a></li>
           </ul>
         </div>
-        <input type="search">
+      <input type="search" v-model="bookSearch">
+      <button type="submit" class="normal"><font-awesome-icon icon="fa-solid fa-magnifying-glass" /></button>
       </div>
-      <div class="gerne-sel d-flex">
-        <div>장르: </div>
 
-        <div class="btn-group">
+      <div class="gerne-sel">
+        <div class="d-inline">장르: </div>
+
+        <div class="btn-group d-inline">
           <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
             장르 선택
           </button>
           <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
             <li v-for="gerne in gerneData" :key="gerne">
-              <button class="dropdown-item" :id="gerne.id">
+              <button class="dropdown-item" :id="gerne.id" @click="selectG($event)" :value=gerne.name>
                 {{gerne.name}}
               </button>
             </li>
           </ul>
         </div>
 
-        <div class="">Rldir</div>
+        <ul class="gerne-selected d-flex" ref="sek_G">
+          <li v-for="sekG in selectedG" :key="sekG" class="sel">
+            <span class="gerne">{{sekG.gerne}}</span>
+            <button v-on:click="deletG(sekG)" class="normal">
+              <font-awesome-icon icon="fa-regular fa-circle-xmark" />
+            </button>
+          </li>
+          
+        </ul>
       </div>
     </div>
 
@@ -134,8 +144,10 @@ export default {
     return {
       bookData: [],
       gerneData: [],
-      boardSearch: "",
+      bookSearch: "",
+      searchCategory: {text: '제목', value: 'title'},
       pageNum: 0,
+      selectedG: [],
     }
   },
   props: {
@@ -153,17 +165,14 @@ export default {
   created () {
     getAPI.get('/books/')
       .then(response => {
-        console.log(response)
-        console.log('books API has recieved data')
         this.bookData = response.data
+        console.log(this.bookData)
       })
       .catch(err => {
         console.log(err)
       })
     getAPI.get('/genre/')
       .then(response => {
-        console.log(response)
-        console.log('gerne API has recieved data')
         this.gerneData = response.data
       })
       .catch(err => {
@@ -179,11 +188,30 @@ export default {
     },
     prevPage () {
       this.pageNum -= 1;
+    },
+
+    selectG(event) {
+      const value = event.currentTarget.value
+      const inner = {'gerne': value}
+
+      this.selectedG.push(inner)
+    },
+    deletG(item) {
+      for(let i = 0; i < this.selectedG.length; i++) {
+        if(this.selectedG[i] === item)  {
+          this.selectedG.splice(i, 1);
+          i--;
+        }
+      }
+    },
+    selCategory(event) {
+      this.searchCategory.text = event.target.text
+      this.searchCategory.value = event.srcElement.attributes.value.value
     }
   },
   computed: {
     pageCount () {
-      let listLeng = this.newsData.length,
+      let listLeng = this.bookData.length,
           listSize = this.pageSize,
           page = Math.floor(listLeng / listSize);
       page = Math.floor((listLeng - 1) / listSize) + 1
@@ -194,13 +222,30 @@ export default {
         end = start + this.pageSize;
 
 			return this.bookData.filter((val) => {
-        var searchVal = val.title.toUpperCase().indexOf(this.boardSearch.toUpperCase()) >= 0;
-        return searchVal
+        if(this.searchCategory.value == "title") {
+          var searchVal = val.title.toUpperCase().indexOf(this.bookSearch.toUpperCase()) >= 0;
+          return searchVal
+
+        } else if(this.searchCategory.value == "author") {
+          // 나중에 다시. 저자 2번째부터 잘 못 읽음
+          for(let i=0; i<val.author.length; i++) {
+            console.log(val.author[i].name.toUpperCase().indexOf(this.bookSearch.toUpperCase()))
+
+            var searchVal = val.author[i].name.toUpperCase().indexOf(this.bookSearch.toUpperCase()) >= 0;
+
+            return searchVal
+          }
+          console.log(searchVal)
+
+        } else if(this.searchCategory.value == "publisher") {
+          var searchVal = val.publisher.toUpperCase().indexOf(this.bookSearch.toUpperCase()) >= 0;
+          return searchVal
+        }
       }).slice(start, end);
-    }
-    //boardSearch(val){},
+    },
   }
 }
+
 </script>
 
 <style>

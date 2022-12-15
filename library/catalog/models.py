@@ -1,7 +1,9 @@
 from django.db import models
+from django.conf import settings
 from django.utils.timezone import now
 from django.urls import reverse
 import uuid
+
 
 from django.utils.translation import ugettext_lazy as _
 
@@ -39,6 +41,8 @@ class Book(models.Model):
 
   create_date = models.DateField(default=now)
 
+  visits = models.IntegerField(default=0)
+
   summary = models.TextField(
       max_length=1000, help_text='책소개 혹은 줄거리를 작성해 주세요')
   isbn = models.CharField(
@@ -74,12 +78,18 @@ class Book(models.Model):
     """Create a string for the Genre. This is required to display genre in Admin."""
     return ', '.join(genre.name for genre in self.genre.all()[:3])
 
-  def visited(request):
-    "#Number of visits to this view, as counted in the session variable."
-    num_visits = request.session.get('num_visits', 0)
-    request.session['num_visits'] = num_visits + 1
-    return num_visits
 
+#Class User(models.Model):
+#  def post(self, request, *args, **kwargs):
+#    self.object = self.get_object()
+#    if request.POST.get("form_type") == "create":
+#        default_log = SystemLog.objects.create(
+#            page_name="계정 - 서비스",
+#            url=self.request.path_info,
+#            user=self.request.user,
+#            method="create",
+#            status_code="500",
+#        )
 
 class BookInstance(models.Model):
   """Model representing a specific copy of a book (i.e. that can be borrowed from the library)."""
@@ -88,6 +98,7 @@ class BookInstance(models.Model):
   book = models.ForeignKey('Book', on_delete=models.SET_NULL, null=True)
   imprint = models.CharField(max_length=200)
   due_back = models.DateField(null=True, blank=True)
+  user = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, on_delete=models.CASCADE)
 
   LOAN_STATUS = (
     ('m', 'Maintenance'),
@@ -104,13 +115,12 @@ class BookInstance(models.Model):
     help_text='Book availability',
   )
 
+  class Meta:
+    ordering = ['due_back']
 
-class Meta:
-	ordering = ['due_back']
-
-	def __str__(self):
-		"""String for representing the Model object."""
-		return f'{self.id} ({self.book.title})'
+    def __str__(self):
+      """String for representing the Model object."""
+      return f'{self.id} ({self.book.title})'
 
 
 class Language(models.Model):

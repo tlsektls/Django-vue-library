@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Map, OffDay, NewsBoard
+from .models import Map, OffDay, NewsBoard, SuggestBoard
 
 
 class MapSerializer(serializers.ModelSerializer):
@@ -21,4 +21,11 @@ class NewsBoardSerializer(serializers.ModelSerializer):
         model = NewsBoard
         ordering = ['timestamp', 'id']
         fields = ('news_title', 'news_content', 'news_poster', 'news_date', 'id')
+
+
+class SuggestBoardSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SuggestBoard
+        ordering = ['timestamp', 'id']
+        fields = "__all__"
 

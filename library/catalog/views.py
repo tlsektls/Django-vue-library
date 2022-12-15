@@ -2,7 +2,7 @@ from django.shortcuts import render
 from .models import Book, Author, Publisher, BookInstance, Genre
 from board.models import Map
 from .serializers import BookSerializer,  BookInstanceSerializer, AuthorSerializer, PublisherSerializer, GenreSerializer
-from django.db.models import  Q
+from django.db.models import Q
 
 from rest_framework import generics, viewsets
 from rest_framework.response import Response
@@ -83,6 +83,13 @@ class BookListView(generics.RetrieveAPIView):
     serializer = BookSerializer(queryset, many=True)
     return Response(serializer.data)
 
+  #def inscrease_visit(self, request, book_id):
+  #  queryset = self.get_queryset()
+  #  queryset.visits = request.GET.get("visits") + 1
+  #  queryset.save()
+  #  print(queryset)
+  #  serializer = BookSerializer(queryset, many=True)
+  #  return Response(serializer.data)
 
 
 class BookSuggestView(generics.ListCreateAPIView):
@@ -99,20 +106,11 @@ class BookSuggestView(generics.ListCreateAPIView):
       for i in title: 
         q.add(Q(title=i), q.OR)
       queryset = Book.objects.filter(q)
-      print(q)
-      print(queryset)
       serializer = BookSerializer(queryset, many=True)
       return Response(serializer.data)
 
     if author is not None:
-      #(AND: ('title', '구름을 키우는 방법'))
-      #q = Q()
-      #q.add(Q(author__name=author), q.OR)
-      #q.add(Q(author=author), q.OR)
       queryset = Book.objects.filter(author__name=author)
-      #print(q)
-      print(queryset)
-      #print(queryset)
       serializer = BookSerializer(queryset, many=True)
       return Response(serializer.data)
 
@@ -127,7 +125,6 @@ class BookNewView(generics.ListCreateAPIView):
     queryset = Book.objects.order_by('-create_date')[:3]
     serializer = BookSerializer(queryset, many=True)
     return Response(serializer.data)
-    
 
 
 class BookInstanceListView(generics.RetrieveAPIView):

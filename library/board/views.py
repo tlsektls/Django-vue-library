@@ -3,8 +3,8 @@ from django.shortcuts import render
 # Create your views here.
 #from django.views.generic.base import TemplateView
 #from django.views import generic
-from .models import Map, OffDay, NewsBoard
-from .serializers import MapSerializer, OffDaySerializer, NewsBoardSerializer
+from .models import Map, OffDay, NewsBoard, SuggestBoard
+from .serializers import MapSerializer, OffDaySerializer, NewsBoardSerializer, SuggestBoardSerializer
 
 from rest_framework import generics
 from rest_framework.response import Response
@@ -45,8 +45,20 @@ class NewsBoardListView(generics.GenericAPIView):
   #  serializer = NewsBoardSerializer(queryset,many=True)
     #return Response(serializer.data)
 
-
 class NewsBoardOneView(generics.RetrieveAPIView):
   queryset = NewsBoard.objects.all()
   serializer_class = NewsBoardSerializer
+
+
+class SuggestBoardListView(generics.GenericAPIView):
+  queryset = SuggestBoard.objects.all()
+  
+  def get(self, request, *args, **kwargs):
+    queryset = self.get_queryset()
+    serializer = SuggestBoardSerializer(queryset,many=True)
+    return Response(serializer.data)
+
+class SuggestBoardOneView(generics.RetrieveAPIView):
+  queryset = SuggestBoard.objects.all()
+  serializer_class = SuggestBoardSerializer
 

@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     'djoser',
     'corsheaders',
     
+    'user',
     'catalog.apps.CatalogConfig', 
     #'sass_processor',
     'board.apps.BoardConfig',
@@ -137,7 +138,7 @@ DATABASES = {
     'default': {
         #'ENGINE': 'django.db.backends.sqlite3',
         #'NAME': BASE_DIR / 'db.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        #'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'djangostudy',
         'USER': 'shin',
@@ -190,7 +191,7 @@ REST_FRAMEWORK = {
     ),
 }
 
-#AUTH_USER_MODEL = 'user.CustomUser'
+AUTH_USER_MODEL = 'user.CustomUser'
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
@@ -232,6 +233,14 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 #    'IGNORE': [r'.+\.hot-update.js', r'.+\.map'],
 #    #'LOADER_CLASS': 'webpack_loader.loader.WebpackLoader',
 #  }
+#}
+
+#DJOSER = {
+#     'SERIALIZERS': {
+#         'user_create': 'user.serializers.UserRegistrationSerializer'
+#    },
+#    #'SEND_ACTIVATION_EMAIL':False,
+#    #'LOGIN_FIELD': 'email'  # <-- Name of a field in User model to be used as login field
 #}
 
 JWT_AUTH = {

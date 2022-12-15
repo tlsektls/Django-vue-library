@@ -46,3 +46,22 @@ class NewsBoard(models.Model):
 
   def __str__(self):
     return self.news_title
+
+
+class SuggestBoard(models.Model):
+  """Model representing an NewsBoard."""
+  suggest_title = models.TextField(default="도서관 뉴스")
+  suggest_date = models.DateField(default=now)
+  suggest_content = models.TextField(default="", null=True, blank=True)
+
+  #id = models.AutoField(primary_key=True)
+
+  class Meta:
+    ordering = ['-suggest_date', 'suggest_title']
+
+  def get_absolute_url(self):
+    """Returns the url to access a particular author instance."""
+    return reverse('suggestboard/suggest', args=[str(self.id)])
+
+  def __str__(self):
+    return self.newsuggest_titles_title
